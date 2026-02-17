@@ -1,32 +1,136 @@
 body {
   margin: 0;
-  font-family: Arial, sans-serif;
-  background: linear-gradient(to right, #4facfe, #00f2fe);
+  font-family: 'Segoe UI', sans-serif;
+  height: 100vh;
+  background: linear-gradient(-45deg, #4facfe, #00f2fe, #43e97b, #38f9d7);
+  background-size: 400% 400%;
+  animation: gradientBG 10s ease infinite;
+}
+
+@keyframes gradientBG {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
 
 .app {
-  text-align: center;
-  margin-top: 100px;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: background 0.5s ease;
+}
+
+.default {
+  background: linear-gradient(to right, #4facfe, #00f2fe);
+}
+
+.clear {
+  background: linear-gradient(to right, #56ccf2, #2f80ed);
+}
+
+.clouds {
+  background: linear-gradient(to right, #bdc3c7, #2c3e50);
+}
+
+.rain {
+  background: linear-gradient(to right, #2c3e50, #4ca1af);
+}
+
+.mist {
+  background: linear-gradient(to right, #757f9a, #d7dde8);
+}
+
+.snow {
+  background: linear-gradient(to right, #e6dada, #274046);
+}
+
+.overlay {
+  backdrop-filter: blur(15px);
+  background: rgba(255, 255, 255, 0.15);
+  padding: 40px;
+  border-radius: 20px;
+  width: 400px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+}
+
+.title {
   color: white;
+  margin-bottom: 20px;
+}
+
+form {
+  margin-bottom: 20px;
 }
 
 form input {
-  padding: 10px;
-  border-radius: 5px;
+  padding: 12px;
+  border-radius: 8px;
   border: none;
-  margin-right: 10px;
+  width: 65%;
+  font-size: 16px;
 }
 
 form button {
-  padding: 10px 15px;
-  border-radius: 5px;
+  padding: 12px 15px;
+  border-radius: 8px;
   border: none;
-  background-color: #ffffff;
-  color: #333;
+  background: #ffffff;
   cursor: pointer;
   font-weight: bold;
+  transition: 0.3s;
 }
 
 form button:hover {
-  background-color: #f0f0f0;
+  background: #f1f1f1;
+  transform: scale(1.05);
+}
+
+.weather-card {
+  background: rgba(255,255,255,0.9);
+  padding: 20px;
+  border-radius: 15px;
+  margin-top: 20px;
+  color: #333;
+  transition: 0.3s;
+}
+
+.weather-card:hover {
+  transform: translateY(-5px);
+}
+
+.weather-card img {
+  width: 80px;
+}
+
+.description {
+  text-transform: capitalize;
+  font-size: 18px;
+  margin: 10px 0;
+}
+
+.details {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+}
+
+.error {
+  color: #ff4d4d;
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+.loader {
+  margin: 20px auto;
+  border: 5px solid #f3f3f3;
+  border-top: 5px solid white;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  100% { transform: rotate(360deg); }
 }
