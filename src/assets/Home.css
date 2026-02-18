@@ -192,14 +192,19 @@ body {
 /* ================= WEATHER CARD ================= */
 
 .weather-card {
-  width: 350px;
-  background: white;
-  color: #333;
+  width: 320px;
   padding: 30px;
-  border-radius: 20px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.4);
-  animation: slideUp 0.6s ease-in-out;
+  border-radius: 25px;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(20px);
+  box-shadow: 0 15px 40px rgba(0,0,0,0.5);
+  color: white;
   text-align: center;
+  transition: 0.3s ease;
+}
+
+.weather-card:hover {
+  transform: translateY(-8px);
 }
 
 .weather-card img {
@@ -218,6 +223,44 @@ body {
   margin-top: 15px;
   font-size: 14px;
 }
+
+.sun-times {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
+  font-size: 13px;
+  opacity: 0.9;
+}
+
+/* ================= AQI ================= */
+
+.aqi-box {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 15px;
+  padding: 8px 15px;
+  border-radius: 20px;
+  background: rgba(255,255,255,0.1);
+}
+
+.aqi-number {
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.aqi-text {
+  font-size: 13px;
+  opacity: 0.9;
+}
+
+/* AQI Colors */
+
+.aqi-1 { background: #2ecc71; color: white; }   /* Good */
+.aqi-2 { background: #f1c40f; color: black; }   /* Fair */
+.aqi-3 { background: #e67e22; color: white; }   /* Moderate */
+.aqi-4 { background: #e74c3c; color: white; }   /* Poor */
+.aqi-5 { background: #8e44ad; color: white; }   /* Very Poor */
 
 /* ================= TEMPERATURE COLORS ================= */
 
@@ -425,4 +468,222 @@ i {
 /* Temperature icon */
 .temperature i {
   margin-right: 8px;
+}
+
+/* ================= ENHANCED FORECAST CARD ================= */
+
+.forecast-card {
+  height: 260px;
+  border-radius: 22px;
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255,255,255,0.1);
+  text-align: center;
+  color: white;
+  transition: 0.35s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.forecast-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+}
+
+.forecast-day {
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+.forecast-icon {
+  width: 60px;
+  margin: 5px auto;
+}
+
+.forecast-temp {
+  font-size: 20px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.forecast-desc {
+  font-size: 13px;
+  opacity: 0.85;
+  margin-bottom: 8px;
+}
+
+.forecast-details {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  opacity: 0.9;
+}
+
+.forecast-extra {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  opacity: 0.8;
+}
+
+.forecast-rain {
+  font-size: 12px;
+  color: #4fc3f7;
+  margin-bottom: 5px;
+}
+
+/* ================= CUSTOM NAVBAR ================= */
+
+.custom-navbar {
+  background: linear-gradient(
+    90deg,
+    rgba(15, 32, 39, 0.9),
+    rgba(32, 58, 67, 0.9),
+    rgba(44, 83, 100, 0.9)
+  );
+  backdrop-filter: blur(15px);
+  padding: 12px 0;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+  transition: 0.3s ease;
+}
+
+.custom-navbar .nav-link {
+  color: white !important;
+  font-weight: 500;
+  transition: 0.3s ease;
+}
+
+.custom-navbar .nav-link:hover {
+  color: #ffc107 !important;
+  transform: translateY(-2px);
+}
+
+.navbar-brand {
+  font-size: 20px;
+}
+
+.dropdown-menu {
+  background: rgba(0,0,0,0.8);
+  backdrop-filter: blur(10px);
+  border: none;
+}
+
+.dropdown-item {
+  color: white;
+}
+
+.dropdown-item:hover {
+  background: rgba(255,255,255,0.1);
+}
+
+/* ================= FOOTER ================= */
+
+.footer-section {
+  background: linear-gradient(
+    90deg,
+    rgba(15, 32, 39, 0.95),
+    rgba(32, 58, 67, 0.95),
+    rgba(44, 83, 100, 0.95)
+  );
+  backdrop-filter: blur(15px);
+}
+
+.footer-title {
+  font-weight: 600;
+  margin-bottom: 15px;
+}
+
+.footer-text {
+  font-size: 14px;
+  opacity: 0.85;
+}
+
+.footer-links {
+  list-style: none;
+  padding: 0;
+}
+
+.footer-links li {
+  margin-bottom: 8px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.footer-links li:hover {
+  color: #ffc107;
+}
+
+.social-icons i {
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.social-icons i:hover {
+  color: #ffc107;
+}
+
+.footer-divider {
+  border-color: rgba(255,255,255,0.2);
+}
+
+/* ================= FEATURES ================= */
+
+.features-section {
+  background: rgba(0,0,0,0.6);
+}
+
+.section-title {
+  font-weight: 700;
+}
+
+.section-subtitle {
+  opacity: 0.8;
+}
+
+.feature-card {
+  padding: 30px;
+  border-radius: 20px;
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(20px);
+  text-align: center;
+  transition: 0.4s ease;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+.feature-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+}
+
+.feature-icon {
+  font-size: 35px;
+  margin-bottom: 15px;
+  color: #ffc107;
+}
+
+/* ================= WHY SECTION ================= */
+
+.why-section {
+  background: linear-gradient(
+    90deg,
+    rgba(15,32,39,0.9),
+    rgba(32,58,67,0.9),
+    rgba(44,83,100,0.9)
+  );
+}
+
+.why-list {
+  list-style: none;
+  padding: 0;
+}
+
+.why-list li {
+  margin-bottom: 12px;
+  font-size: 16px;
+}
+
+.why-icon {
+  font-size: 120px;
+  opacity: 0.2;
 }

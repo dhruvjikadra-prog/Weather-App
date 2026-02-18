@@ -1,0 +1,143 @@
+/* ================= WRAPPER ================= */
+
+.auth-wrapper {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #102a33, #1f3b45, #244e5a);
+  font-family: "Poppins", sans-serif;
+}
+
+/* ================= CARD ================= */
+
+.auth-card {
+  width: 380px;
+  padding: 50px 40px;
+  border-radius: 28px;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(30px);
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+  color: white;
+  text-align: center;
+  transition: 0.3s ease;
+}
+
+.auth-card h2 {
+  font-size: 34px;
+  margin-bottom: 35px;
+  font-weight: 600;
+}
+
+/* ================= FORM ================= */
+
+.auth-card form {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+/* ================= INPUT ================= */
+
+.auth-card input {
+  width: 100%;
+  padding: 16px 20px;
+  border-radius: 14px;
+  border: none;
+  outline: none;
+  background: rgba(255, 255, 255, 0.14);
+  color: white;
+  font-size: 15px;
+  transition: 0.3s ease;
+  box-sizing: border-box;
+}
+
+.auth-card input::placeholder {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.auth-card input:focus {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* ================= PASSWORD FIELD ================= */
+
+.password-field {
+  position: relative;
+  width: 100%;
+}
+
+.password-field input {
+  padding-right: 70px; /* space for Show */
+}
+
+.password-field span {
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 14px;
+  color: #00c6ff;
+  cursor: pointer;
+  font-weight: 500;
+  transition: 0.3s;
+}
+
+.password-field span:hover {
+  color: white;
+}
+
+/* ================= BUTTON ================= */
+
+.auth-card button {
+  width: 100%;
+  padding: 16px;
+  border-radius: 14px;
+  border: none;
+  background: linear-gradient(45deg, #00c6ff, #0072ff);
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s ease;
+  margin-top: 5px;
+}
+
+.auth-card button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px rgba(0, 114, 255, 0.4);
+}
+
+/* ================= TEXT LINKS ================= */
+
+.auth-card p {
+  margin-top: 25px;
+  font-size: 14px;
+}
+
+.auth-card a {
+  color: #00c6ff;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.auth-card a:hover {
+  text-decoration: underline;
+}
+
+/* ================= ERROR ================= */
+
+.error {
+  color: #ff6b6b;
+  font-size: 14px;
+  text-align: left;
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media (max-width: 500px) {
+  .auth-card {
+    width: 90%;
+    padding: 35px 25px;
+  }
+}
