@@ -3,6 +3,8 @@ import Navbar from "../components/Navbar";
 import SearchBar from "../components/SearchBar";
 import WeatherCard from "../components/WeatherCard";
 import Forecast from "../components/Forecast";
+import HourlyForecast from "../components/HourlyForecast";
+import TemperatureChart from "../components/TempratureChart";
 import Features from "../components/Features";
 import Footer from "../components/Footer";
 import earthVideo from "../assets/earth.mp4";
@@ -15,11 +17,42 @@ function Home() {
     const [forecast, setForecast] = useState([]);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [aqi, setAqi] = useState(null);
+    const API_KEY = import.meta.env.WEATHER_API_KEY;
+    const [suggestions, setSuggestions] = useState([]);
+    const [hourlyData, setHourlyData] = useState([]);
+    const [aqiForecast, setAqiForecast] = useState([]);
+
 
     useEffect(() => {
         const loginStatus = localStorage.getItem("isLoggedIn");
         setIsLoggedIn(loginStatus === "true");
     }, []);
+
+    useEffect(() => {
+        const handleClickOutside = () => {
+            setSuggestions([]);
+        };
+
+        window.addEventListener("click", handleClickOutside);
+        return () => window.removeEventListener("click", handleClickOutside);
+    }, []);
+
+    const fetchCitySuggestions = async (value) => {
+        if (value.length < 2) {
+            setSuggestions([]);
+            return;
+        }
+
+        try {
+            const response = await fetch(
+                `https://api.openweathermap.org/geo/1.0/direct?q=${value}&limit=5&appid=26dceb95ee8945f2f49e630a950d219e`
+            );
+            const data = await response.json();
+            setSuggestions(data);
+        } catch (err) {
+            console.log("Suggestion error");
+        }
+    };
 
     // Single Weather Fetch Function
     const fetchWeatherByCoords = async (lat, lon) => {
@@ -28,7 +61,7 @@ function Home() {
             setError("");
 
             const response = await fetch(
-                `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=26dceb95ee8945f2f49e630a950d219e&units=metric`
+                `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=metric`
             );
 
             if (!response.ok) throw new Error("Weather fetch failed");
@@ -36,6 +69,7 @@ function Home() {
             const data = await response.json();
             setWeather(data);
             fetchAQI(data.coord.lat, data.coord.lon);
+            fetchAQIForecast(data.coord.lat, data.coord.lon);
             fetchForecast(data.name);
 
         } catch (err) {
@@ -55,8 +89,14 @@ function Home() {
 
             const data = await response.json();
 
-            // Get one forecast per day
-            const dailyData = data.list.filter((item, index) => index % 8 === 0);
+            // 🔹 Full 3-hour interval data for hourly forecast
+            setHourlyData(data.list);
+
+            // 🔹 Filter only 12:00 PM for daily forecast cards
+            const dailyData = data.list.filter(item =>
+                item.dt_txt.includes("12:00:00")
+            );
+
             setForecast(dailyData);
 
         } catch (err) {
@@ -89,6 +129,24 @@ function Home() {
 
         } catch (err) {
             console.log("AQI fetch error");
+        }
+    };
+
+    const fetchAQIForecast = async (lat, lon) => {
+        try {
+            const response = await fetch(
+                `https://api.openweathermap.org/data/2.5/air_pollution/forecast?lat=${lat}&lon=${lon}&appid=${API_KEY}`
+            );
+
+            const data = await response.json();
+
+            // Take one AQI per day (same logic as forecast)
+            const dailyAQI = data.list.filter((item, index) => index % 8 === 0);
+
+            setAqiForecast(dailyAQI);
+
+        } catch (err) {
+            console.log("AQI forecast error");
         }
     };
 
@@ -200,24 +258,47 @@ function Home() {
 
                             {/* Bootstrap Form */}
                             <form
-                                className="d-flex mb-3"
+                                className="mb-3 position-relative"
                                 onSubmit={(e) => {
                                     e.preventDefault();
                                     handleSearch(e.target.city.value);
                                 }}
+                                onClick={(e) => e.stopPropagation()}
                             >
-                                <input
-                                    type="text"
-                                    name="city"
-                                    className="form-control rounded-start-pill"
-                                    placeholder="Enter city name"
-                                />
-                                <button
-                                    type="submit"
-                                    className="btn btn-warning rounded-end-pill px-4"
-                                >
-                                    <i className="fas fa-search"></i>
-                                </button>
+                                <div className="d-flex">
+                                    <input
+                                        type="text"
+                                        name="city"
+                                        className="form-control rounded-start-pill"
+                                        placeholder="Enter city name"
+                                        autoComplete="off"
+                                        onChange={(e) => fetchCitySuggestions(e.target.value)}
+                                    />
+                                    <button
+                                        type="submit"
+                                        className="btn btn-warning rounded-end-pill px-4"
+                                    >
+                                        <i className="fas fa-search"></i>
+                                    </button>
+                                </div>
+
+                                {/* Suggestions */}
+                                {suggestions.length > 0 && (
+                                    <div className="suggestion-box">
+                                        {suggestions.map((city, index) => (
+                                            <div
+                                                key={index}
+                                                className="suggestion-item"
+                                                onClick={() => {
+                                                    handleSearch(city.name);
+                                                    setSuggestions([]);
+                                                }}
+                                            >
+                                                {city.name}, {city.country}
+                                            </div>
+                                        ))}
+                                    </div>
+                                )}
                             </form>
 
                             <button
@@ -227,11 +308,24 @@ function Home() {
                                 <i className="fas fa-location-crosshairs me-2"></i>
                                 Detect My Location
                             </button>
+
+                            {loading && <div className="loader mt-3"></div>}
+                            {error && <p className="error mt-2">{error}</p>}
                         </div>
 
                         {/* RIGHT SIDE WEATHER CARD */}
-                        <div className="col-lg-6 d-flex justify-content-center align-items-start">
-                            {weather && <WeatherCard weather={weather} aqi={aqi} />}
+                        <div className="col-lg-6">
+
+                            {/* Weather Card */}
+                            <div className="d-flex justify-content-center mb-4">
+                                {weather && <WeatherCard weather={weather} aqi={aqi} />}
+                            </div>
+
+                            {/* Hourly Forecast */}
+                            {forecast.length > 0 && (
+                                <HourlyForecast data={hourlyData} />
+                            )}
+
                         </div>
 
                     </div>
@@ -314,10 +408,41 @@ function Home() {
                         </div>
                     )}
 
+                    {forecast.length > 0 && (
+                        <div className="row mt-5">
+                            <div className="col-12">
+
+                                <h4 className="text-white mb-4">
+                                    {isLoggedIn ? "5-Day Temperature Trend" : "2-Day Temperature Trend"}
+                                </h4>
+
+                                <TemperatureChart
+                                    forecast={isLoggedIn ? forecast.slice(0, 5) : forecast.slice(0, 2)}
+                                    aqiForecast={isLoggedIn ? aqiForecast.slice(0, 5) : aqiForecast.slice(0, 2)}
+                                />
+
+                                {!isLoggedIn && (
+                                    <div className="text-center mt-4">
+                                        <p className="text-warning">
+                                            🔒 Login to unlock full 5-day temperature chart
+                                        </p>
+                                        <button
+                                            className="btn btn-warning rounded-pill px-4"
+                                            onClick={() => window.location.href = "/login"}
+                                        >
+                                            Login Now
+                                        </button>
+                                    </div>
+                                )}
+
+                            </div>
+                        </div>
+                    )}
+
 
                 </div>
-                    <Features />
-                    <Footer />
+                <Features />
+                <Footer />
             </div>
         </div>
     );

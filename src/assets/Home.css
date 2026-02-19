@@ -195,7 +195,12 @@ body {
   width: 320px;
   padding: 30px;
   border-radius: 25px;
-  background: rgba(255, 255, 255, 0.08);
+  background: linear-gradient(
+    145deg,
+    rgba(255,255,255,0.12),
+    rgba(255,255,255,0.05)
+  );
+  border: 1px solid rgba(255,255,255,0.15);
   backdrop-filter: blur(20px);
   box-shadow: 0 15px 40px rgba(0,0,0,0.5);
   color: white;
@@ -204,7 +209,7 @@ body {
 }
 
 .weather-card:hover {
-  transform: translateY(-8px);
+  box-shadow: 0 0 40px rgba(235, 215, 0, 0.4);
 }
 
 .weather-card img {
@@ -686,4 +691,137 @@ i {
 .why-icon {
   font-size: 120px;
   opacity: 0.2;
+}
+
+.chart-container {
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(20px);
+  padding: 25px;
+  border-radius: 20px;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+  transition: 0.4s ease;
+}
+
+.chart-container:hover {
+  box-shadow: 0 0 40px rgba(255,193,7,0.3);
+}
+
+.suggestion-box {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  background: rgba(0,0,0,0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 15px;
+  margin-top: 8px;
+  z-index: 1000;
+  max-height: 220px;
+  overflow-y: auto;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.5);
+}
+
+.suggestion-item {
+  padding: 12px 15px;
+  cursor: pointer;
+  transition: 0.3s ease;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.suggestion-item:last-child {
+  border-bottom: none;
+}
+
+.suggestion-item:hover {
+  background: rgba(255,255,255,0.1);
+}
+
+.hourly-container {
+  margin-top: 20px;
+}
+
+.hourly-container {
+  margin-top: 25px;
+}
+
+.hourly-title {
+  text-align: center;
+  color: #ffffff;
+  font-weight: 600;
+  margin-bottom: 15px;
+}
+
+.hourly-scroll {
+  display: flex;
+  gap: 18px;
+  overflow-x: auto;
+  padding: 20px;
+  scroll-behavior: smooth;
+
+  background: linear-gradient(
+    145deg,
+    rgba(255,255,255,0.10),
+    rgba(255,255,255,0.05)
+  );
+  border: 1px solid rgba(255,255,255,0.15);
+  backdrop-filter: blur(20px);
+  box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+  border-radius: 25px;
+}
+
+/* Hide scrollbar (optional clean look) */
+.hourly-scroll::-webkit-scrollbar {
+  height: 6px;
+}
+
+.hourly-scroll::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.2);
+  border-radius: 10px;
+}
+
+/* Hour Card */
+.hour-card {
+  min-width: 120px;
+  padding: 15px;
+  border-radius: 18px;
+  background: rgba(0,0,0,0.45);
+  text-align: center;
+  transition: 0.3s ease;
+  color: white;
+}
+
+.hour-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 10px 25px rgba(255,193,7,0.3);
+}
+
+.hour-time {
+  font-size: 14px;
+  opacity: 0.8;
+  margin-bottom: 5px;
+}
+
+.hour-icon {
+  width: 50px;
+}
+
+.hour-temp {
+  font-size: 18px;
+  font-weight: 600;
+  color: #ffc107;
+  margin: 5px 0;
+}
+
+.hour-desc {
+  font-size: 13px;
+  opacity: 0.85;
+}
+
+.active-hour {
+  border: 1px solid #ffc107;
+  box-shadow: 0 0 20px rgba(255,193,7,0.4);
+}
+
+.content {
+  min-height: calc(100vh - 80px);
 }

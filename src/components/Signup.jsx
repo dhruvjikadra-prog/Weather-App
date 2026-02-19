@@ -18,16 +18,18 @@ function Signup() {
             return;
         }
 
-        if (password < 8 ) {
+        if (password.length < 8 ) {
             setError("Passwords must be 8 Characters Long");
             return;
         }
 
-        const userData = { email, password };
+        const userData = { name, email, password };
 
         localStorage.setItem("user", JSON.stringify(userData));
 
         localStorage.setItem("isLoggedIn", "true");
+
+        localStorage.setItem("userName", name);
 
         navigate("/");
     };

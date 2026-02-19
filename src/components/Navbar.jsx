@@ -4,10 +4,19 @@ import { Link, useNavigate } from "react-router-dom";
 function Navbar() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
+  
+  const [userName, setUserName] = useState("");
 
   useEffect(() => {
     const loginStatus = localStorage.getItem("isLoggedIn");
     setIsLoggedIn(loginStatus === "true");
+  }, []);
+
+   useEffect(() => {
+    const storedName = localStorage.getItem("userName");
+    if (storedName) {
+      setUserName(storedName);
+    }
   }, []);
 
   const handleLogout = () => {
@@ -70,7 +79,7 @@ function Navbar() {
                   className="btn btn-outline-light rounded-pill dropdown-toggle"
                   data-bs-toggle="dropdown"
                 >
-                  <i className="fas fa-user-circle me-1"></i> My Account
+                  <i className="fas fa-user-circle me-1"></i> {userName || "My account"}
                 </button>
 
                 <ul className="dropdown-menu dropdown-menu-end">
