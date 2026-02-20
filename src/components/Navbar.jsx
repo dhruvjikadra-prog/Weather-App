@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-function Navbar() {
+function Navbar({ theme, toggleTheme }) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
-  
+
   const [userName, setUserName] = useState("");
 
   useEffect(() => {
@@ -12,7 +12,7 @@ function Navbar() {
     setIsLoggedIn(loginStatus === "true");
   }, []);
 
-   useEffect(() => {
+  useEffect(() => {
     const storedName = localStorage.getItem("userName");
     if (storedName) {
       setUserName(storedName);
@@ -91,6 +91,21 @@ function Navbar() {
                 </ul>
               </li>
             )}
+
+            <button
+              className="btn btn-outline-warning rounded-pill"
+              onClick={toggleTheme}
+            >
+              {theme === "dark" ? (
+                <>
+                  <i className="fas fa-sun me-2"></i> Light Mode
+                </>
+              ) : (
+                <>
+                  <i className="fas fa-moon me-2"></i> Dark Mode
+                </>
+              )}
+            </button>
 
           </ul>
         </div>

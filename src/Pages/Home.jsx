@@ -17,16 +17,62 @@ function Home() {
     const [forecast, setForecast] = useState([]);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [aqi, setAqi] = useState(null);
-    const API_KEY = import.meta.env.WEATHER_API_KEY;
+    const API_KEY = import.meta.env.VITE_WEATHER_API_KEY;
     const [suggestions, setSuggestions] = useState([]);
     const [hourlyData, setHourlyData] = useState([]);
     const [aqiForecast, setAqiForecast] = useState([]);
+    const [recentSearches, setRecentSearches] = useState([]);
+    const [theme, setTheme] = useState("dark");
+    const [searchTerm, setSearchTerm] = useState("");
 
+    useEffect(() => {
+        const savedTheme = localStorage.getItem("theme");
+        if (savedTheme) {
+            setTheme(savedTheme);
+            document.body.className = savedTheme;
+        }
+    }, []);
+
+    useEffect(() => {
+        if (weather) {
+            const condition = weather.weather[0].main.toLowerCase();
+
+            let weatherClass = "";
+
+            if (condition.includes("clear")) weatherClass = "clear-bg";
+            else if (condition.includes("cloud")) weatherClass = "cloud-bg";
+            else if (condition.includes("rain")) weatherClass = "rain-bg";
+            else if (condition.includes("snow")) weatherClass = "snow-bg";
+            else if (condition.includes("thunder")) weatherClass = "storm-bg";
+            else weatherClass = "default-bg";
+
+            document.body.classList.remove(
+                "clear-bg",
+                "cloud-bg",
+                "rain-bg",
+                "snow-bg",
+                "storm-bg",
+                "default-bg"
+            );
+
+            document.body.classList.add(weatherClass);
+        }
+    }, [weather]);
 
     useEffect(() => {
         const loginStatus = localStorage.getItem("isLoggedIn");
         setIsLoggedIn(loginStatus === "true");
     }, []);
+
+    useEffect(() => {
+        const delay = setTimeout(() => {
+            if (searchTerm) {
+                fetchCitySuggestions(searchTerm);
+            }
+        }, 500);
+
+        return () => clearTimeout(delay);
+    }, [searchTerm]);
 
     useEffect(() => {
         const handleClickOutside = () => {
@@ -37,6 +83,13 @@ function Home() {
         return () => window.removeEventListener("click", handleClickOutside);
     }, []);
 
+    useEffect(() => {
+        const saved = localStorage.getItem("recentCities");
+        if (saved) {
+            setRecentSearches(JSON.parse(saved));
+        }
+    }, []);
+
     const fetchCitySuggestions = async (value) => {
         if (value.length < 2) {
             setSuggestions([]);
@@ -45,7 +98,7 @@ function Home() {
 
         try {
             const response = await fetch(
-                `https://api.openweathermap.org/geo/1.0/direct?q=${value}&limit=5&appid=26dceb95ee8945f2f49e630a950d219e`
+                `https://api.openweathermap.org/geo/1.0/direct?q=${value}&limit=5&appid=${API_KEY}`
             );
             const data = await response.json();
             setSuggestions(data);
@@ -64,7 +117,7 @@ function Home() {
                 `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=metric`
             );
 
-            if (!response.ok) throw new Error("Weather fetch failed");
+            if (!response.ok) throw new Error("Unable to fetch weather data.");
 
             const data = await response.json();
             setWeather(data);
@@ -82,7 +135,7 @@ function Home() {
     const fetchForecast = async (cityName) => {
         try {
             const response = await fetch(
-                `https://api.openweathermap.org/data/2.5/forecast?q=${cityName}&appid=26dceb95ee8945f2f49e630a950d219e&units=metric`
+                `https://api.openweathermap.org/data/2.5/forecast?q=${cityName}&appid=${API_KEY}&units=metric`
             );
 
             if (!response.ok) throw new Error("Forecast fetch failed");
@@ -116,7 +169,7 @@ function Home() {
     const fetchAQI = async (lat, lon) => {
         try {
             const response = await fetch(
-                `https://api.openweathermap.org/data/2.5/air_pollution?lat=${lat}&lon=${lon}&appid=26dceb95ee8945f2f49e630a950d219e`
+                `https://api.openweathermap.org/data/2.5/air_pollution?lat=${lat}&lon=${lon}&appid=${API_KEY}`
             );
 
             const data = await response.json();
@@ -185,6 +238,13 @@ function Home() {
 
     }, []);
 
+    const toggleTheme = () => {
+        const newTheme = theme === "dark" ? "light" : "dark";
+        setTheme(newTheme);
+        document.body.className = newTheme;
+        localStorage.setItem("theme", newTheme);
+    };
+
     // Manual Search
     const handleSearch = async (city) => {
         city = city.trim();
@@ -198,19 +258,35 @@ function Home() {
             setError("");
 
             const response = await fetch(
-                `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=26dceb95ee8945f2f49e630a950d219e&units=metric`
+                `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=metric`
             );
 
-            if (!response.ok) throw new Error("City not found");
+            if (response.status === 404)
+                throw new Error("City not found. Please check spelling.");
 
             const data = await response.json();
             setWeather(data);
             fetchForecast(data.name);
             fetchAQI(data.coord.lat, data.coord.lon);
 
+            // Save recent searches
+            let updatedSearches = [
+                city,
+                ...recentSearches.filter(c => c.toLowerCase() !== city.toLowerCase())
+            ];
+
+            if (updatedSearches.length > 5) {
+                updatedSearches = updatedSearches.slice(0, 5);
+            }
+
+            setRecentSearches(updatedSearches);
+            localStorage.setItem("recentCities", JSON.stringify(updatedSearches));
+
         } catch (err) {
             setError(err.message);
             setWeather(null);
+            setForecast([]);
+            setHourlyData([]);
         } finally {
             setLoading(false);
         }
@@ -218,6 +294,34 @@ function Home() {
 
     return (
         <div className="home-wrapper">
+
+            {loading && !error && (
+                <div className="loading-overlay">
+                    <div className="loading-spinner"></div>
+                    <p className="loading-text">Fetching Weather Data...</p>
+                </div>
+            )}
+
+            {error && !loading && (
+                <div className="error-overlay">
+                    <div className="error-card">
+                        <i className="fas fa-exclamation-triangle error-icon"></i>
+                        <h4>Something Went Wrong</h4>
+                        <p>{error}</p>
+
+                        <button
+                            className="btn btn-warning mt-3"
+                            onClick={() => {
+                                setError("");
+                                setWeather(null);
+                                setForecast([]);
+                            }}
+                        >
+                            Try Again
+                        </button>
+                    </div>
+                </div>
+            )}
 
             {/* VIDEO BACKGROUND */}
             <div className="video-container">
@@ -235,15 +339,18 @@ function Home() {
                 </video>
             </div>
 
-            {/* PARTICLES */}
-            <div className="particles">
-                <span></span><span></span><span></span><span></span><span></span>
-            </div>
+            {weather && weather.weather[0].main.toLowerCase().includes("rain") && (
+                <div className="rain-effect"></div>
+            )}
+
+            {weather && weather.weather[0].main.toLowerCase().includes("snow") && (
+                <div className="snow-effect"></div>
+            )}
 
             {/* CONTENT */}
             <div className="overlay">
 
-                <Navbar />
+                <Navbar theme={theme} toggleTheme={toggleTheme} />
 
                 <div className="container py-5 mt-5">
                     <div className="row align-items-center">
@@ -272,7 +379,7 @@ function Home() {
                                         className="form-control rounded-start-pill"
                                         placeholder="Enter city name"
                                         autoComplete="off"
-                                        onChange={(e) => fetchCitySuggestions(e.target.value)}
+                                        onChange={(e) => setSearchTerm(e.target.value)}
                                     />
                                     <button
                                         type="submit"
@@ -301,6 +408,24 @@ function Home() {
                                 )}
                             </form>
 
+                            {/* Recent Searches */}
+                            {recentSearches.length > 0 && (
+                                <div className="recent-searches mt-3">
+                                    <h6 className="text-warning">Recent Searches</h6>
+                                    <div className="recent-list">
+                                        {recentSearches.map((city, index) => (
+                                            <span
+                                                key={index}
+                                                className="recent-item"
+                                                onClick={() => handleSearch(city)}
+                                            >
+                                                {city}
+                                            </span>
+                                        ))}
+                                    </div>
+                                </div>
+                            )}
+
                             <button
                                 className="btn btn-outline-warning rounded-pill px-4"
                                 onClick={() => window.location.reload()}
@@ -308,9 +433,6 @@ function Home() {
                                 <i className="fas fa-location-crosshairs me-2"></i>
                                 Detect My Location
                             </button>
-
-                            {loading && <div className="loader mt-3"></div>}
-                            {error && <p className="error mt-2">{error}</p>}
                         </div>
 
                         {/* RIGHT SIDE WEATHER CARD */}
@@ -318,11 +440,13 @@ function Home() {
 
                             {/* Weather Card */}
                             <div className="d-flex justify-content-center mb-4">
-                                {weather && <WeatherCard weather={weather} aqi={aqi} />}
+                                {!loading && weather && (
+                                    <WeatherCard weather={weather} aqi={aqi} />
+                                )}
                             </div>
 
                             {/* Hourly Forecast */}
-                            {forecast.length > 0 && (
+                            {!loading && forecast.length > 0 && (
                                 <HourlyForecast data={hourlyData} />
                             )}
 
@@ -350,7 +474,7 @@ function Home() {
 
                                                     <img
                                                         src={`https://openweathermap.org/img/wn/${day.weather[0].icon}@2x.png`}
-                                                        alt="icon"
+                                                        alt="weather icon"
                                                         className="forecast-icon"
                                                     />
 

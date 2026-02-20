@@ -1,5 +1,17 @@
+import { useState, useEffect } from "react";
+
 function WeatherCard({ weather, aqi }) {
 
+  const {
+    name,
+    main,
+    weather: weatherInfo,
+    wind,
+    sys,
+    visibility
+  } = weather;
+
+  const [animatedTemp, setAnimatedTemp] = useState(0);
   const temp = Math.round(weather.main.temp);
   const condition = weather.weather[0].main.toLowerCase();
   const iconCode = weather.weather[0].icon;
@@ -29,16 +41,35 @@ function WeatherCard({ weather, aqi }) {
   };
 
   const getAQICategory = (value) => {
-  if (value <= 50) return "Good";
-  if (value <= 100) return "Moderate";
-  if (value <= 150) return "Unhealthy (Sensitive)";
-  if (value <= 200) return "Unhealthy";
-  if (value <= 300) return "Very Unhealthy";
-  return "Hazardous";
-};
+    if (value <= 50) return "Good";
+    if (value <= 100) return "Moderate";
+    if (value <= 150) return "Unhealthy (Sensitive)";
+    if (value <= 200) return "Unhealthy";
+    if (value <= 300) return "Very Unhealthy";
+    return "Hazardous";
+  };
+
+  useEffect(() => {
+    let start = 0;
+    const end = temp;
+    const duration = 800;
+    const incrementTime = 20;
+    const step = Math.ceil(end / (duration / incrementTime));
+
+    const counter = setInterval(() => {
+      start += step;
+      if (start >= end) {
+        start = end;
+        clearInterval(counter);
+      }
+      setAnimatedTemp(start);
+    }, incrementTime);
+
+    return () => clearInterval(counter);
+  }, [temp]);
 
   return (
-    <div className="weather-card">
+    <div key={weather.name} className="weather-card">
 
       <div className={`weather-icon ${getIconClass()}`}>
         <img
@@ -50,7 +81,7 @@ function WeatherCard({ weather, aqi }) {
       <h2>{weather.name}</h2>
 
       <h1 className={`temperature ${getTempClass()}`}>
-        <i className="fas fa-temperature-high"></i> {temp}°C
+        <i className="fas fa-temperature-high"></i> {animatedTemp}°C
       </h1>
 
       <p className="description">
@@ -83,6 +114,24 @@ function WeatherCard({ weather, aqi }) {
           </div>
         </div>
       )}
+
+      {/* EXTRA WEATHER DETAILS */}
+      <div className="extra-details">
+        <div className="extra-box">
+          <i className="fas fa-temperature-high"></i>
+          <span>Feels Like: {Math.round(main.feels_like)}°C</span>
+        </div>
+
+        <div className="extra-box">
+          <i className="fas fa-gauge"></i>
+          <span>Pressure: {main.pressure} hPa</span>
+        </div>
+
+        <div className="extra-box">
+          <i className="fas fa-eye"></i>
+          <span>Visibility: {(visibility / 1000).toFixed(1)} km</span>
+        </div>
+      </div>
 
     </div>
   );
