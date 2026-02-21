@@ -62,7 +62,7 @@ function Navbar({ theme, toggleTheme }) {
             </li>
 
             <li className="nav-item">
-              <Link className="nav-link" to="/">
+              <Link className="nav-link" to="/about">
                 <i className="fas fa-info-circle me-1"></i> About
               </Link>
             </li>

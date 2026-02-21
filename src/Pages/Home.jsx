@@ -518,7 +518,7 @@ function Home() {
                                 {!isLoggedIn && (
                                     <div className="text-center mt-4">
                                         <p className="text-warning">
-                                            🔒 Login to unlock full 5-day forecast
+                                            <i className="fas fa-lock"></i> Login to unlock full 5-day forecast
                                         </p>
                                         <button
                                             className="btn btn-warning rounded-pill px-4"
@@ -548,7 +548,7 @@ function Home() {
                                 {!isLoggedIn && (
                                     <div className="text-center mt-4">
                                         <p className="text-warning">
-                                            🔒 Login to unlock full 5-day temperature chart
+                                            <i className="fas fa-lock"></i> Login to unlock full 5-day temperature chart
                                         </p>
                                         <button
                                             className="btn btn-warning rounded-pill px-4"

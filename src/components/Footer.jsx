@@ -49,8 +49,19 @@ function Footer() {
         <hr className="footer-divider" />
 
         <div className="text-center">
-          <p className="mb-0">
+          <p className="mb-1">
             © {new Date().getFullYear()} ProWeather. All Rights Reserved.
+          </p>
+          <p className="mb-0">
+            Developed by <strong>Dhruv Jikadra</strong> |
+            <a
+              href="https://github.com/dhruvjikadra-prog"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-decoration-none text-info ms-1"
+            >
+              View on GitHub
+            </a>
           </p>
         </div>
 

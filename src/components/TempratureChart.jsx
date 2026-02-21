@@ -8,6 +8,7 @@ import {
     Legend,
 } from "chart.js";
 import { Line } from "react-chartjs-2";
+import { useState } from "react";
 
 ChartJS.register(
     LineElement,
@@ -18,101 +19,123 @@ ChartJS.register(
     Legend
 );
 
-function TemperatureChart({ forecast, aqiForecast }) {
+function TemperatureChart({ forecast }) {
+
+    const [visible, setVisible] = useState({
+        temp: true,
+        humidity: true,
+        wind: true,
+        aqi: true
+    });
+
     if (!forecast || forecast.length === 0) return null;
 
-    const labels = forecast.map((day) =>
-        new Date(day.dt_txt).toLocaleDateString("en-US", {
-            weekday: "short",
-        })
+    const labels = forecast.map(day =>
+        new Date(day.dt_txt).toLocaleDateString("en-US", { weekday: "short" })
     );
 
-    const temperatures = forecast.map((day) =>
-        Math.round(day.main.temp)
-    );
-
-    const humidity = forecast.map((day) =>
-        day.main.humidity
-    );
-
-    const windSpeed = forecast.map((day) =>
-        Math.round(day.wind.speed)
-    );
-
+    const temperatures = forecast.map(day => Math.round(day.main.temp));
+    const humidity = forecast.map(day => day.main.humidity);
+    const windSpeed = forecast.map(day => Math.round(day.wind.speed));
     const aqiData = forecast.map(() =>
         Math.floor(Math.random() * 150) + 50
     );
 
-
     const data = {
         labels,
         datasets: [
-            {
+            visible.temp && {
                 label: "Temperature (°C)",
                 data: temperatures,
                 borderColor: "#ffc107",
                 backgroundColor: "rgba(255,193,7,0.2)",
                 tension: 0.4,
                 fill: true,
-                pointRadius: 5,
             },
-            {
+            visible.humidity && {
                 label: "Humidity (%)",
                 data: humidity,
                 borderColor: "#00c3ff",
-                backgroundColor: "rgba(0,195,255,0.15)",
                 tension: 0.4,
-                fill: false,
-                pointRadius: 4,
             },
-            {
-                label: "Wind Speed (km/h)",
+            visible.wind && {
+                label: "Wind Speed",
                 data: windSpeed,
                 borderColor: "#ff4d6d",
-                backgroundColor: "rgba(255,77,109,0.15)",
                 tension: 0.4,
-                fill: false,
-                pointRadius: 4,
             },
-            {
+            visible.aqi && {
                 label: "AQI",
                 data: aqiData,
                 borderColor: "#ff3b3b",
-                backgroundColor: "rgba(255,59,59,0.2)",
+                borderDash: [6, 6],
                 tension: 0.4,
-                fill: false,
-                pointRadius: 4,
             }
-        ],
+        ].filter(Boolean)
     };
 
     const options = {
         responsive: true,
+        maintainAspectRatio: false,
+        animation: {
+            duration: 1500,
+            easing: "easeInOutQuart"
+        },
         plugins: {
             legend: {
-                labels: {
-                    color: "white",
-                },
-            },
+                labels: { color: "white" }
+            }
         },
         scales: {
             x: {
                 ticks: { color: "white" },
-                grid: { color: "rgba(255,255,255,0.1)" },
+                grid: { color: "rgba(255,255,255,0.08)" }
             },
             y: {
                 ticks: { color: "white" },
-                grid: { color: "rgba(255,255,255,0.1)" },
-            },
-        },
+                grid: { color: "rgba(255,255,255,0.08)" }
+            }
+        }
     };
+
+    const avgTemp = Math.round(
+        temperatures.reduce((a, b) => a + b, 0) / temperatures.length
+    );
 
     return (
         <div className="chart-container">
-            <h4 className="text-white mb-3">
-                Weather Trend (Temp • Humidity • Wind • AQI)
-            </h4>
-            <Line data={data} options={options} />
+
+            {/* Chart Summary */}
+            <div className="chart-summary">
+                <div>
+                    <h5>Avg Temp</h5>
+                    <p>{avgTemp}°C</p>
+                </div>
+                <div>
+                    <h5>Max AQI</h5>
+                    <p>{Math.max(...aqiData)}</p>
+                </div>
+            </div>
+
+            {/* Toggle Buttons */}
+            <div className="chart-toggle">
+                {["temp", "humidity", "wind", "aqi"].map(key => (
+                    <button
+                        key={key}
+                        className={visible[key] ? "active-toggle" : ""}
+                        onClick={() =>
+                            setVisible({ ...visible, [key]: !visible[key] })
+                        }
+                    >
+                        {key.toUpperCase()}
+                    </button>
+                ))}
+            </div>
+
+            <div className="chart-wrapper">
+                <Line data={data} options={options} />
+            </div>
+
         </div>
     );
 }
