@@ -526,12 +526,12 @@ function Home() {
                                         <p className="text-warning">
                                             <i className="fas fa-lock"></i> Login to unlock full 5-day forecast
                                         </p>
-                                        <button
+                                        <a
                                             className="btn btn-warning rounded-pill px-4"
-                                            onClick={() => window.location.href = "/login"}
+                                            href="/login"
                                         >
                                             Login Now
-                                        </button>
+                                        </a>
                                     </div>
                                 )}
                             </div>
