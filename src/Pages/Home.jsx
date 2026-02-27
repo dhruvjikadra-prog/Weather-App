@@ -526,12 +526,12 @@ function Home() {
                                         <p className="text-warning">
                                             <i className="fas fa-lock"></i> Login to unlock full 5-day forecast
                                         </p>
-                                        <a
+                                        <button
                                             className="btn btn-warning rounded-pill px-4"
-                                            href="/login"
+                                            onClick={handleGo}
                                         >
                                             Login Now
-                                        </a>
+                                        </button>
                                     </div>
                                 )}
                             </div>
