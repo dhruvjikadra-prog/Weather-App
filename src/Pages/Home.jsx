@@ -9,8 +9,10 @@ import Features from "../components/Features";
 import Footer from "../components/Footer";
 import earthVideo from "../assets/earth.mp4";
 import "../assets/Home.css";
+import { useNavigate } from "react-router-dom";
 
 function Home() {
+    const navigate = useNavigate();
     const [weather, setWeather] = useState(null);
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
@@ -32,6 +34,10 @@ function Home() {
             document.body.className = savedTheme;
         }
     }, []);
+
+    const handleGo = () => {
+        navigate('/login');
+    }
 
     useEffect(() => {
         if (weather) {
@@ -552,7 +558,7 @@ function Home() {
                                         </p>
                                         <button
                                             className="btn btn-warning rounded-pill px-4"
-                                            onClick={() => window.location.href = "/login"}
+                                            onClick={handleGo}
                                         >
                                             Login Now
                                         </button>
