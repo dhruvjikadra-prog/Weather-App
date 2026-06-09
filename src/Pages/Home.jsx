@@ -274,6 +274,7 @@ function Home() {
             setWeather(data);
             fetchForecast(data.name);
             fetchAQI(data.coord.lat, data.coord.lon);
+            fetchAQIForecast(data.coord.lat, data.coord.lon);
 
             // Save recent searches
             let updatedSearches = [
@@ -371,7 +372,7 @@ function Home() {
 
                             {/* Bootstrap Form */}
                             <form
-                                className="mb-3 position-relative"
+                                className="weather-search-form mb-3 position-relative"
                                 onSubmit={(e) => {
                                     e.preventDefault();
                                     handleSearch(e.target.city.value);
@@ -382,6 +383,7 @@ function Home() {
                                     <input
                                         type="text"
                                         name="city"
+                                        value={searchTerm}
                                         className="form-control rounded-start-pill"
                                         placeholder="Enter city name"
                                         autoComplete="off"
@@ -403,6 +405,7 @@ function Home() {
                                                 key={index}
                                                 className="suggestion-item"
                                                 onClick={() => {
+                                                    setSearchTerm(city.name);
                                                     handleSearch(city.name);
                                                     setSuggestions([]);
                                                 }}
@@ -433,10 +436,17 @@ function Home() {
                             )}
 
                             <button
-                                className="btn btn-outline-warning rounded-pill px-4"
-                                onClick={() => window.location.reload()}
+                                className="btn btn-outline-warning rounded-pill px-4 mt-3"
+                                onClick={() => {
+                                    navigator.geolocation.getCurrentPosition((position) => {
+                                        fetchWeatherByCoords(
+                                            position.coords.latitude,
+                                            position.coords.longitude
+                                        );
+                                    });
+                                }}
                             >
-                                <i className="fas fa-location-crosshairs me-2"></i>
+                                <i className="fas fa-location-crosshairs me-2 mt-"></i>
                                 Detect My Location
                             </button>
                         </div>

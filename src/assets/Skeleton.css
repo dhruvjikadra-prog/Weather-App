@@ -1,0 +1,772 @@
+/* =========================================================
+   SKELETON LOADING — Liquid Glass Design System
+   Matches: Outfit + DM Sans · Deep navy · Amber tokens
+   =========================================================
+
+   Architecture:
+   ─ .sk-bone          → base shimmer element
+   ─ .sk-pulse-wrap    → breathing glow wrapper
+   ─ Shape utilities   → sk-circle, sk-pill, sk-bar …
+   ─ Width utilities   → sk-w-8 … sk-w-48
+   ─ Spacing utilities → sk-mt-*, sk-mx-auto, sk-gap-*
+   ─ Section shells    → sk-weather-card, sk-hourly-*, etc.
+   ========================================================= */
+
+/* ─── Core shimmer keyframe ─────────────────────────────── */
+@keyframes sk-shimmer {
+    0% {
+        background-position: -600px 0;
+    }
+
+    100% {
+        background-position: 600px 0;
+    }
+}
+
+@keyframes sk-pulse {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.55;
+    }
+}
+
+@keyframes sk-wave {
+    0% {
+        transform: translateX(-100%);
+    }
+
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+/* ─── Base bone ─────────────────────────────────────────── */
+.sk-bone {
+    background: linear-gradient(90deg,
+            rgba(255, 255, 255, 0.04) 0%,
+            rgba(255, 255, 255, 0.11) 30%,
+            rgba(255, 255, 255, 0.16) 50%,
+            rgba(255, 255, 255, 0.11) 70%,
+            rgba(255, 255, 255, 0.04) 100%);
+    background-size: 600px 100%;
+    background-repeat: no-repeat;
+    animation: sk-shimmer 1.6s ease-in-out infinite;
+    border-radius: 8px;
+    display: block;
+    position: relative;
+    overflow: hidden;
+}
+
+/* ripple overlay */
+.sk-bone::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg,
+            transparent 0%,
+            rgba(255, 255, 255, 0.07) 50%,
+            transparent 100%);
+    animation: sk-wave 1.6s ease-in-out infinite;
+}
+
+/* Pulse wrapper */
+.sk-pulse-wrap {
+    animation: sk-pulse 2.4s ease-in-out infinite;
+}
+
+/* ─── Shape variants ────────────────────────────────────── */
+.sk-circle {
+    border-radius: 50% !important;
+}
+
+.sk-pill {
+    border-radius: 999px !important;
+}
+
+.sk-bar {
+    height: 5px;
+    width: 100%;
+    border-radius: 99px;
+}
+
+/* ─── Size presets ──────────────────────────────────────── */
+/* Icon circles */
+.sk-icon-xs {
+    width: 10px;
+    height: 10px;
+}
+
+.sk-icon-sm {
+    width: 22px;
+    height: 22px;
+}
+
+.sk-icon-md {
+    width: 48px;
+    height: 48px;
+}
+
+.sk-icon-lg {
+    width: 60px;
+    height: 60px;
+}
+
+.sk-icon-xl {
+    width: 80px;
+    height: 80px;
+}
+
+/* Text lines */
+.sk-text-xs {
+    height: 9px;
+}
+
+.sk-text-sm {
+    height: 11px;
+}
+
+.sk-text-md {
+    height: 14px;
+}
+
+.sk-text-lg {
+    height: 18px;
+}
+
+.sk-text-xl {
+    height: 24px;
+}
+
+/* Special */
+.sk-temp-num {
+    width: 110px;
+    height: 72px;
+    border-radius: 12px;
+}
+
+.sk-temp-sm {
+    width: 70px;
+    height: 36px;
+    border-radius: 10px;
+}
+
+.sk-accent-bar {
+    width: 3px;
+    height: 18px;
+    border-radius: 99px;
+    background: rgba(255, 193, 7, 0.18) !important;
+    background-size: unset !important;
+    animation: sk-pulse 2s ease-in-out infinite;
+}
+
+.sk-accent-bar::after {
+    display: none;
+}
+
+/* ─── Width utilities ───────────────────────────────────── */
+.sk-w-8 {
+    width: 32px;
+}
+
+.sk-w-10 {
+    width: 40px;
+}
+
+.sk-w-12 {
+    width: 48px;
+}
+
+.sk-w-14 {
+    width: 56px;
+}
+
+.sk-w-16 {
+    width: 64px;
+}
+
+.sk-w-18 {
+    width: 72px;
+}
+
+.sk-w-20 {
+    width: 80px;
+}
+
+.sk-w-24 {
+    width: 96px;
+}
+
+.sk-w-28 {
+    width: 112px;
+}
+
+.sk-w-32 {
+    width: 128px;
+}
+
+.sk-w-36 {
+    width: 144px;
+}
+
+.sk-w-40 {
+    width: 160px;
+}
+
+.sk-w-44 {
+    width: 176px;
+}
+
+.sk-w-48 {
+    width: 192px;
+}
+
+/* ─── Spacing helpers ───────────────────────────────────── */
+.sk-mt-4 {
+    margin-top: 4px;
+}
+
+.sk-mt-5 {
+    margin-top: 5px;
+}
+
+.sk-mt-6 {
+    margin-top: 6px;
+}
+
+.sk-mt-8 {
+    margin-top: 8px;
+}
+
+.sk-mt-10 {
+    margin-top: 10px;
+}
+
+.sk-mx-auto {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* ─── Flex row helper ───────────────────────────────────── */
+.sk-row {
+    display: flex;
+    align-items: center;
+}
+
+.sk-gap-10 {
+    gap: 10px;
+}
+
+/* =========================================================
+   WEATHER CARD SKELETON
+   ========================================================= */
+.sk-weather-card {
+    width: 340px;
+    padding: 28px 24px;
+    border-radius: var(--radius-xl, 28px);
+    background: linear-gradient(145deg,
+            rgba(255, 255, 255, 0.06),
+            rgba(255, 255, 255, 0.02));
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    box-shadow: 0 16px 50px rgba(0, 0, 0, 0.4);
+    animation: fadeUp 0.5s ease both;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+/* header */
+.sk-wc-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.sk-wc-location {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+}
+
+.sk-wc-location-text {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+/* temperature row */
+.sk-wc-temp-row {
+    display: flex;
+    align-items: flex-end;
+    gap: 14px;
+}
+
+.sk-wc-temp-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    padding-bottom: 4px;
+}
+
+/* stats row */
+.sk-wc-stats {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: var(--radius-md, 14px);
+    padding: 12px 10px;
+    gap: 4px;
+}
+
+.sk-stat-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    flex: 1;
+}
+
+/* sun row */
+.sk-sun-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: var(--radius-md, 14px);
+    padding: 10px 14px;
+    gap: 8px;
+}
+
+.sk-sun-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+}
+
+.sk-sun-arc {
+    flex: 1;
+    height: 5px;
+    background: rgba(255, 193, 7, 0.08) !important;
+    background-size: unset !important;
+    animation: sk-pulse 2s ease-in-out infinite;
+    border-radius: 99px;
+}
+
+.sk-sun-arc::after {
+    display: none;
+}
+
+/* AQI row */
+.sk-aqi-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: var(--radius-md, 14px);
+    padding: 12px 14px;
+}
+
+.sk-aqi-right {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+/* extra grid */
+.sk-extra-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+}
+
+.sk-extra-cell {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: var(--radius-sm, 10px);
+    padding: 10px 6px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+}
+
+/* =========================================================
+   HOURLY FORECAST SKELETON
+   ========================================================= */
+.sk-hourly-container {
+    margin-top: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    animation: fadeUp 0.55s ease 0.1s both;
+}
+
+.sk-hourly-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 2px;
+}
+
+.sk-hourly-strip {
+    display: flex;
+    gap: 10px;
+    overflow: hidden;
+    padding: 18px 16px;
+    background: linear-gradient(135deg,
+            rgba(255, 255, 255, 0.06),
+            rgba(255, 255, 255, 0.03));
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    border-radius: var(--radius-xl, 28px);
+    backdrop-filter: blur(16px);
+}
+
+.sk-hour-card {
+    flex-shrink: 0;
+    min-width: 108px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: var(--radius-lg, 20px);
+    padding: 14px 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+}
+
+.sk-hourly-summary {
+    display: flex;
+    justify-content: space-around;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: var(--radius-md, 14px);
+    padding: 12px 20px;
+    gap: 8px;
+}
+
+.sk-hs-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+    gap: 0;
+}
+
+/* =========================================================
+   QUICK STATS SKELETON
+   ========================================================= */
+.sk-quick-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-top: 16px;
+    animation: fadeUp 0.55s ease 0.12s both;
+}
+
+.sk-qs-item {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    border-radius: var(--radius-md, 14px);
+    padding: 14px 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+}
+
+/* =========================================================
+   FORECAST GRID SKELETON
+   ========================================================= */
+.sk-forecast-section {
+    margin-top: 48px;
+    animation: fadeUp 0.55s ease 0.18s both;
+}
+
+.sk-section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.sk-forecast-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 14px;
+}
+
+.sk-forecast-card {
+    background: linear-gradient(160deg,
+            rgba(255, 255, 255, 0.07),
+            rgba(255, 255, 255, 0.03));
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    border-radius: var(--radius-xl, 28px);
+    padding: 18px 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    backdrop-filter: blur(16px);
+    animation: fadeUp 0.5s ease both;
+}
+
+.sk-range-row {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0 4px;
+    margin-top: 6px;
+}
+
+/* =========================================================
+   TEMPERATURE CHART SKELETON
+   ========================================================= */
+.sk-chart-container {
+    background: linear-gradient(145deg,
+            rgba(255, 255, 255, 0.07),
+            rgba(255, 255, 255, 0.02));
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    padding: 28px;
+    border-radius: var(--radius-xl, 28px);
+    margin-top: 48px;
+    box-shadow: 0 16px 50px rgba(0, 0, 0, 0.4);
+    animation: fadeUp 0.55s ease 0.22s both;
+}
+
+.sk-chart-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 20px;
+}
+
+.sk-chart-summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: var(--radius-md, 14px);
+    padding: 14px 18px;
+    margin-bottom: 20px;
+    gap: 4px;
+}
+
+.sk-cs-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+    gap: 0;
+}
+
+.sk-chart-pills {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+}
+
+/* Chart body */
+.sk-chart-body {
+    position: relative;
+    height: 200px;
+    display: flex;
+    gap: 12px;
+}
+
+.sk-chart-yaxis {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 4px 0;
+    width: 28px;
+    flex-shrink: 0;
+}
+
+.sk-chart-area {
+    flex: 1;
+    position: relative;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+    border-left: 1px solid rgba(255, 255, 255, 0.07);
+    overflow: hidden;
+    border-radius: 4px;
+}
+
+.sk-grid-line {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.05);
+}
+
+/* Place grid lines evenly */
+.sk-grid-line:nth-child(1) {
+    top: 20%;
+}
+
+.sk-grid-line:nth-child(2) {
+    top: 40%;
+}
+
+.sk-grid-line:nth-child(3) {
+    top: 60%;
+}
+
+.sk-grid-line:nth-child(4) {
+    top: 80%;
+}
+
+/* SVG wave */
+.sk-chart-wave {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    animation: sk-pulse 2.2s ease-in-out infinite;
+}
+
+/* x-axis */
+.sk-chart-xaxis {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 8px;
+    padding-left: 40px;
+}
+
+/* legend */
+.sk-chart-legend {
+    display: flex;
+    gap: 16px;
+    margin-top: 16px;
+    padding-top: 14px;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.sk-legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* =========================================================
+   FULL DASHBOARD SKELETON
+   ========================================================= */
+.sk-dashboard {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+}
+
+/* =========================================================
+   LIGHT MODE OVERRIDES
+   ========================================================= */
+body.light .sk-bone {
+    background: linear-gradient(90deg,
+            rgba(0, 0, 0, 0.04) 0%,
+            rgba(0, 0, 0, 0.09) 30%,
+            rgba(0, 0, 0, 0.13) 50%,
+            rgba(0, 0, 0, 0.09) 70%,
+            rgba(0, 0, 0, 0.04) 100%);
+    background-size: 600px 100%;
+}
+
+body.light .sk-bone::after {
+    background: linear-gradient(90deg,
+            transparent 0%,
+            rgba(0, 0, 0, 0.04) 50%,
+            transparent 100%);
+}
+
+body.light .sk-weather-card,
+body.light .sk-hourly-strip,
+body.light .sk-forecast-card,
+body.light .sk-chart-container {
+    background: rgba(255, 255, 255, 0.65);
+    border-color: rgba(0, 0, 0, 0.08);
+}
+
+body.light .sk-wc-stats,
+body.light .sk-sun-row,
+body.light .sk-aqi-row,
+body.light .sk-extra-cell,
+body.light .sk-chart-summary,
+body.light .sk-hourly-summary,
+body.light .sk-qs-item {
+    background: rgba(0, 0, 0, 0.04);
+    border-color: rgba(0, 0, 0, 0.06);
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+@media (max-width: 992px) {
+    .sk-weather-card {
+        width: 100%;
+        max-width: 420px;
+        margin: 0 auto;
+    }
+
+    .sk-forecast-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .sk-quick-stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .sk-forecast-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .sk-chart-body {
+        height: 160px;
+    }
+
+    .sk-hourly-strip {
+        padding: 14px 12px;
+    }
+
+    .sk-hour-card {
+        min-width: 96px;
+    }
+}
+
+@media (max-width: 480px) {
+    .sk-weather-card {
+        padding: 18px 14px;
+    }
+
+    .sk-forecast-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+
+    .sk-temp-num {
+        width: 90px;
+        height: 56px;
+    }
+
+    .sk-chart-container {
+        padding: 20px 14px;
+    }
+}

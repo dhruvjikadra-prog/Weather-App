@@ -21,48 +21,71 @@ function Login() {
     const storedUser = JSON.parse(localStorage.getItem("user"));
 
     if (!storedUser || storedUser.email !== email || storedUser.password !== password) {
-      setError("Invalid credentials");
+      setError("Invalid credentials. Please check your email and password.");
       return;
     }
 
     localStorage.setItem("isLoggedIn", "true");
-
+    localStorage.setItem("userName", storedUser.name);
     navigate("/");
   };
 
   return (
     <div className="auth-wrapper">
       <div className="auth-card">
-        <h2>Login</h2>
+
+        {/* Brand */}
+        <div className="auth-brand">
+          <i className="fas fa-cloud-sun"></i>
+          ProWeather
+        </div>
+
+        <h2>Welcome Back</h2>
+        <p className="auth-subtitle">Sign in to unlock full forecast access</p>
 
         <form onSubmit={handleLogin}>
+
+          <div className="input-group-label">Email</div>
           <input
             type="email"
-            placeholder="Email"
+            placeholder="your@email.com"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            autoComplete="email"
           />
 
+          <div className="input-group-label">Password</div>
           <div className="password-field">
             <input
               type={showPass ? "text" : "password"}
-              placeholder="Password"
+              placeholder="Enter your password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              autoComplete="current-password"
             />
             <span onClick={() => setShowPass(!showPass)}>
               {showPass ? "Hide" : "Show"}
             </span>
           </div>
 
-          {error && <p className="error">{error}</p>}
+          {error && (
+            <p className="error">
+              <i className="fas fa-exclamation-circle"></i>
+              {error}
+            </p>
+          )}
 
-          <button type="submit">Login</button>
+          <button type="submit">
+            <i className="fas fa-sign-in-alt me-2"></i>
+            Login
+          </button>
         </form>
 
         <p>
-          Don't have an account? <Link to="/signup">Signup</Link>
+          Don't have an account?{" "}
+          <Link to="/signup">Create one free</Link>
         </p>
+
       </div>
     </div>
   );

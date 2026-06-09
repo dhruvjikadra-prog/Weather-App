@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from "react";
 import Navbar from "../components/Navbar";
+import { color } from "chart.js/helpers";
 
 function About() {
 
@@ -119,6 +120,10 @@ function About() {
                         <i className="fab fa-bootstrap me-2 ms-2 text-purple"></i> Bootstrap |
                         <i className="fab fa-github me-2 ms-2"></i> GitHub
                     </p>
+                </div>
+
+                <div className="text-center">
+                    <p>Developed by <a style={{textDecoration: 'none'}} href="https://github.com/dhruvjikadra-prog"> <b style={{color: '#fff'}}>Dhruv Jikadra</b></a></p>
                 </div>
 
             </div>

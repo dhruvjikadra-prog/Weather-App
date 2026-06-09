@@ -3,20 +3,14 @@ import { Link, useNavigate } from "react-router-dom";
 
 function Navbar({ theme, toggleTheme }) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const navigate = useNavigate();
-
   const [userName, setUserName] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     const loginStatus = localStorage.getItem("isLoggedIn");
     setIsLoggedIn(loginStatus === "true");
-  }, []);
-
-  useEffect(() => {
     const storedName = localStorage.getItem("userName");
-    if (storedName) {
-      setUserName(storedName);
-    }
+    if (storedName) setUserName(storedName);
   }, []);
 
   const handleLogout = () => {
@@ -37,17 +31,18 @@ function Navbar({ theme, toggleTheme }) {
 
         {/* Mobile Toggle */}
         <button
-          className="navbar-toggler"
+          className="navbar-toggler border-0"
           type="button"
           data-bs-toggle="collapse"
           data-bs-target="#navbarContent"
+          style={{ boxShadow: 'none' }}
         >
           <span className="navbar-toggler-icon"></span>
         </button>
 
         {/* Nav Items */}
         <div className="collapse navbar-collapse" id="navbarContent">
-          <ul className="navbar-nav ms-auto align-items-lg-center">
+          <ul className="navbar-nav ms-auto align-items-lg-center gap-1">
 
             <li className="nav-item">
               <Link className="nav-link" to="/">
@@ -67,21 +62,45 @@ function Navbar({ theme, toggleTheme }) {
               </Link>
             </li>
 
+            {/* Theme Toggle */}
+            <li className="nav-item">
+              <button
+                className="btn btn-outline-warning rounded-pill px-3 py-1"
+                onClick={toggleTheme}
+                style={{ fontSize: '0.82rem', border: '1px solid rgba(255,193,7,0.45)' }}
+              >
+                {theme === "dark" ? (
+                  <><i className="fas fa-sun me-1"></i> Light</>
+                ) : (
+                  <><i className="fas fa-moon me-1"></i> Dark</>
+                )}
+              </button>
+            </li>
+
+            {/* Auth */}
             {!isLoggedIn ? (
-              <li className="nav-item ms-lg-3">
-                <Link className="btn btn-warning rounded-pill px-3" to="/login">
+              <li className="nav-item">
+                <Link className="btn btn-warning rounded-pill px-3" to="/login"
+                  style={{ fontSize: '0.85rem', fontWeight: 600, color: '#0a0a0a' }}>
                   <i className="fas fa-user me-1"></i> Login
                 </Link>
               </li>
             ) : (
-              <li className="nav-item dropdown ms-lg-3">
+              <li className="nav-item dropdown">
                 <button
-                  className="btn btn-outline-light rounded-pill dropdown-toggle"
+                  className="btn rounded-pill dropdown-toggle"
                   data-bs-toggle="dropdown"
+                  style={{
+                    background: 'rgba(255,255,255,0.1)',
+                    border: '1px solid rgba(255,255,255,0.18)',
+                    color: 'white',
+                    fontSize: '0.85rem',
+                    backdropFilter: 'blur(10px)',
+                  }}
                 >
-                  <i className="fas fa-user-circle me-1"></i> {userName || "My account"}
+                  <i className="fas fa-user-circle me-1"></i>
+                  {userName || "My Account"}
                 </button>
-
                 <ul className="dropdown-menu dropdown-menu-end">
                   <li>
                     <button className="dropdown-item" onClick={handleLogout}>
@@ -91,21 +110,6 @@ function Navbar({ theme, toggleTheme }) {
                 </ul>
               </li>
             )}
-
-            <button
-              className="btn btn-outline-warning rounded-pill"
-              onClick={toggleTheme}
-            >
-              {theme === "dark" ? (
-                <>
-                  <i className="fas fa-sun me-2"></i> Light Mode
-                </>
-              ) : (
-                <>
-                  <i className="fas fa-moon me-2"></i> Dark Mode
-                </>
-              )}
-            </button>
 
           </ul>
         </div>
