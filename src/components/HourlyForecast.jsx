@@ -8,6 +8,8 @@ function HourlyForecast({ data }) {
     // First 8 slots normally; toggle reveals up to 16
     const visibleData = showAll ? data.slice(0, 16) : data.slice(0, 8);
 
+    const hourShown = visibleData.length * 3;
+
     const nowHour = new Date().getHours();
 
     return (
@@ -19,7 +21,7 @@ function HourlyForecast({ data }) {
                     <span className="hourly-accent-bar"></span>
                     <h4 className="hourly-title">
                         <i className="fas fa-clock"></i>
-                        Next 24 Hours
+                        Next {hourShown} Hours
                     </h4>
                 </div>
                 {data.length > 8 && (
